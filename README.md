@@ -14,8 +14,8 @@ Use these accounts to explore the different permissions within the app.
 
 | Role | Email | Password | Permissions |
 | :--- | :--- | :--- | :--- |
-| **Admin (Creator)** | `admin@test.com` | `12345678` | Upload videos, Delete videos, View Gallery |
-| **Student (Learner)** | `student@test.com` | `12345678` | View Gallery, Watch Videos (No Delete/Upload) |
+| **Admin (Creator)** | `admin@test.com` | `123456789` | Upload videos, Delete videos, View Gallery |
+| **Student (Learner)** | `student@test.com` | `123456789` | View Gallery, Watch Videos (No Delete/Upload) |
 
 ---
 

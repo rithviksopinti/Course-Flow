@@ -58,6 +58,9 @@
 <script>
 let role = null;
 
+// ✅ YOUR BACKEND URL
+const API = "https://course-flow-33ox.onrender.com";
+
 // ROLE SELECT
 function selectRole(r) {
     localStorage.setItem("role", r);
@@ -96,24 +99,29 @@ function resetRole() {
 
 // LOAD COURSES
 async function loadCourses() {
-    const res = await fetch("http://localhost:5000/api/courses");
-    const data = await res.json();
+    try {
+        const res = await fetch(API + "/api/courses");
+        const data = await res.json();
 
-    const container = document.getElementById("courses");
-    container.innerHTML = "";
+        const container = document.getElementById("courses");
+        container.innerHTML = "";
 
-    data.forEach(c => {
-        const embed = c.video_url.replace("watch?v=", "embed/");
+        data.forEach(c => {
+            const embed = c.video_url.replace("watch?v=", "embed/");
 
-        container.innerHTML += `
-            <div class="course">
-                <iframe src="${embed}"></iframe>
-                <h3>${c.title}</h3>
-                <p>${c.description}</p>
-                ${role === "creator" ? `<button onclick="deleteCourse('${c._id}')">Delete</button>` : ""}
-            </div>
-        `;
-    });
+            container.innerHTML += `
+                <div class="course">
+                    <iframe src="${embed}"></iframe>
+                    <h3>${c.title}</h3>
+                    <p>${c.description}</p>
+                    ${role === "creator" ? `<button onclick="deleteCourse('${c._id}')">Delete</button>` : ""}
+                </div>
+            `;
+        });
+
+    } catch (err) {
+        console.error("Error loading courses:", err);
+    }
 }
 
 // CREATE
@@ -122,7 +130,7 @@ async function publish() {
     const video = document.getElementById("video").value;
     const desc = document.getElementById("desc").value;
 
-    await fetch("http://localhost:5000/api/courses", {
+    await fetch(API + "/api/courses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, video_url: video, description: desc })
@@ -133,7 +141,7 @@ async function publish() {
 
 // DELETE
 async function deleteCourse(id) {
-    await fetch(`http://localhost:5000/api/courses/${id}`, {
+    await fetch(API + "/api/courses/" + id, {
         method: "DELETE"
     });
 

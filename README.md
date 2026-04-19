@@ -138,6 +138,10 @@ node server.js
 
 ---
 
+<img width="1919" height="972" alt="Screenshot 2026-04-19 112638" src="https://github.com/user-attachments/assets/01168566-5ff9-4603-ad88-17fa40968934" />
+<img width="1919" height="969" alt="Screenshot 2026-04-19 112617" src="https://github.com/user-attachments/assets/6e71cd06-a19f-4dfb-a1ce-58b1c62bf57c" />
+
+
 ## 🚀 Future Improvements
 
 * 🔐 User Authentication (JWT)

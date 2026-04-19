@@ -2,66 +2,164 @@
 <html>
 <head>
     <title>CourseFlow</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: Arial; background: #f4f7f6; margin: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #f5f7fb;
+        }
 
-        .center { display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .card { background: white; padding: 30px; border-radius: 10px; width: 300px; text-align: center; }
+        nav {
+            background: linear-gradient(90deg, #3ecf8e, #00b894);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+        }
 
-        button { padding: 10px; margin: 10px; width: 100%; cursor: pointer; }
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-        nav { background: black; color: white; padding: 15px; display: flex; justify-content: space-between; }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        button {
+            padding: 12px;
+            margin: 10px 0;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            background: #3ecf8e;
+            color: white;
+        }
+
+        button:hover {
+            background: #2bb673;
+        }
 
         .hidden { display: none; }
 
-        .container { padding: 20px; }
+        .container {
+            padding: 30px;
+            max-width: 1100px;
+            margin: auto;
+        }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, 300px); gap: 20px; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
 
-        .course { background: white; padding: 10px; border-radius: 10px; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
 
-        iframe { width: 100%; height: 200px; }
+        .course {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+        }
+
+        iframe {
+            width: 100%;
+            height: 180px;
+            border: none;
+        }
+
+        .course-content {
+            padding: 15px;
+        }
+
+        .delete-btn {
+            background: red;
+        }
+
+        .yt-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #0077ff;
+            text-decoration: none;
+        }
     </style>
 </head>
+
 <body>
 
 <!-- ROLE SELECT -->
 <div id="role-page" class="center">
     <div class="card">
-        <h2>Select Role</h2>
+        <h2>CourseFlow</h2>
         <button onclick="selectRole('creator')">Creator</button>
         <button onclick="selectRole('learner')">Learner</button>
     </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- MAIN -->
 <div id="main-app" class="hidden">
     <nav>
         <span>CourseFlow</span>
-        <span onclick="resetRole()">Change Role</span>
+        <span onclick="resetRole()" style="cursor:pointer;">Change Role</span>
     </nav>
 
     <div class="container">
+
         <div id="create-section" class="hidden">
             <h2>Create Course</h2>
-            <input id="title" placeholder="Title"><br><br>
-            <input id="video" placeholder="YouTube URL"><br><br>
-            <input id="desc" placeholder="Description"><br><br>
+            <input id="title" placeholder="Title">
+            <input id="video" placeholder="YouTube URL">
+            <input id="desc" placeholder="Description">
             <button onclick="publish()">Publish</button>
         </div>
 
         <h2>Courses</h2>
         <div id="courses" class="grid"></div>
+
     </div>
 </div>
 
 <script>
 let role = null;
-
-// ✅ YOUR BACKEND URL
 const API = "https://course-flow-33ox.onrender.com";
 
-// ROLE SELECT
+// 🔥 FIXED EMBED FUNCTION
+function getEmbedUrl(url) {
+    try {
+        if (url.includes("youtu.be")) {
+            const id = url.split("/").pop().split("?")[0];
+            return `https://www.youtube.com/embed/${id}`;
+        }
+
+        const urlObj = new URL(url);
+        const id = urlObj.searchParams.get("v");
+        return `https://www.youtube.com/embed/${id}`;
+    } catch {
+        return "";
+    }
+}
+
+// ROLE
 function selectRole(r) {
     localStorage.setItem("role", r);
     role = r;
@@ -73,7 +171,6 @@ function selectRole(r) {
     loadCourses();
 }
 
-// LOAD EXISTING ROLE
 const saved = localStorage.getItem("role");
 if (saved) {
     role = saved;
@@ -84,14 +181,12 @@ if (saved) {
     loadCourses();
 }
 
-// UI CONTROL
 function setupUI() {
     if (role === "creator") {
         document.getElementById("create-section").classList.remove("hidden");
     }
 }
 
-// RESET ROLE
 function resetRole() {
     localStorage.removeItem("role");
     location.reload();
@@ -99,29 +194,32 @@ function resetRole() {
 
 // LOAD COURSES
 async function loadCourses() {
-    try {
-        const res = await fetch(API + "/api/courses");
-        const data = await res.json();
+    const res = await fetch(API + "/api/courses");
+    const data = await res.json();
 
-        const container = document.getElementById("courses");
-        container.innerHTML = "";
+    const container = document.getElementById("courses");
+    container.innerHTML = "";
 
-        data.forEach(c => {
-            const embed = c.video_url.replace("watch?v=", "embed/");
+    data.forEach(c => {
+        const embed = getEmbedUrl(c.video_url);
 
-            container.innerHTML += `
-                <div class="course">
-                    <iframe src="${embed}"></iframe>
+        container.innerHTML += `
+            <div class="course">
+                <iframe src="${embed}"></iframe>
+                <div class="course-content">
                     <h3>${c.title}</h3>
                     <p>${c.description}</p>
-                    ${role === "creator" ? `<button onclick="deleteCourse('${c._id}')">Delete</button>` : ""}
-                </div>
-            `;
-        });
 
-    } catch (err) {
-        console.error("Error loading courses:", err);
-    }
+                    <!-- fallback -->
+                    <a class="yt-link" href="${c.video_url}" target="_blank">
+                        Watch on YouTube
+                    </a>
+
+                    ${role === "creator" ? `<button class="delete-btn" onclick="deleteCourse('${c._id}')">Delete</button>` : ""}
+                </div>
+            </div>
+        `;
+    });
 }
 
 // CREATE

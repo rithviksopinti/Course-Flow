@@ -1,42 +1,159 @@
-# 🎓 CourseFlow: Role-Based Learning Platform
+# 🎓 CourseFlow – Role-Based Learning Platform
 
-CourseFlow is a full-stack web application designed for video-based learning. It features a dual-user system where **Creators** can manage content and **Learners** can view it, all powered by a live cloud database.
-
-## 🚀 Live Demo
-**View the project here:** [https://course-flow-two.vercel.app/](https://course-flow-two.vercel.app/)
+CourseFlow is a full-stack web application designed for video-based learning. It allows **Creators** to upload courses and **Learners** to view them, with a simple role-based interface and real-time cloud storage.
 
 ---
 
-## 🔑 Test Credentials
-Use these accounts to explore the different permissions within the app. 
+## 🚀 Live Demo
 
-> **Note:** These are pre-staged accounts with specific metadata roles.
-
-| Role | Email | Password | Permissions |
-| :--- | :--- | :--- | :--- |
-| **Admin (Creator)** | `admin@test.com` | `123456789` | Upload videos, Delete videos, View Gallery |
-| **Student (Learner)** | `student@test.com` | `123456789` | View Gallery, Watch Videos (No Delete/Upload) |
+🌐 Frontend: https://course-flow-two.vercel.app/
+⚙️ Backend API: https://course-flow-33ox.onrender.com/api/courses
 
 ---
 
 ## 🛠️ Tech Stack
-* **Frontend:** HTML5, CSS3, JavaScript (ES6)
-* **Database:** Supabase (PostgreSQL)
-* **Authentication:** Supabase Auth with Role-Based Access Control (RBAC)
-* **Hosting:** Vercel
-* **Video Integration:** YouTube Embedded API
+
+**Frontend**
+
+* HTML5
+* CSS3
+* JavaScript (ES6)
+
+**Backend**
+
+* Node.js
+* Express.js
+
+**Database**
+
+* MongoDB Atlas
+
+**Deployment**
+
+* Frontend → Vercel
+* Backend → Render
 
 ---
 
-## 🌟 Key Features
-* **Role-Based UI:** The interface dynamically changes based on the logged-in user's metadata (Creator vs. Learner).
-* **Cloud Persistence:** Courses are stored in a live PostgreSQL database; changes reflect globally in real-time.
-* **Secure Permissions:** Database Row-Level Security (RLS) ensures only authorized requests are processed.
-* **Single Page Application (SPA):** Seamlessly switch between the "Learn" and "Create" tabs without page refreshes.
+## 🌟 Features
+
+* 🔄 **Role-Based UI**
+
+  * Creator → Add & delete courses
+  * Learner → View courses
+
+* 📺 **YouTube Video Integration**
+
+  * Supports multiple URL formats
+  * Handles embed + fallback links
+
+* ☁️ **Cloud Storage**
+
+  * Courses stored in MongoDB Atlas
+  * Real-time updates across users
+
+* ⚡ **REST API**
+
+  * GET → Fetch courses
+  * POST → Create course
+  * DELETE → Remove course
+
+* 🌐 **Deployed Full Stack**
+
+  * Frontend and backend hosted separately
 
 ---
 
 ## 📂 Project Structure
-```text
-├── index.html         # The main application (Login, Gallery, and Creator tools)
-└── README.md          # Project documentation and credentials
+
+```
+courseflow/
+│
+├── backend/
+│   ├── models/
+│   │   └── Course.js
+│   ├── routes/
+│   │   └── courses.js
+│   ├── server.js
+│   └── .env
+│
+└── frontend/
+    └── index.html
+```
+
+---
+
+## ⚙️ Setup Instructions (Local)
+
+### 1️⃣ Clone Repository
+
+```
+git clone https://github.com/your-username/courseflow.git
+cd courseflow
+```
+
+---
+
+### 2️⃣ Backend Setup
+
+```
+cd backend
+npm install
+```
+
+Create `.env` file:
+
+```
+MONGO_URI=your_mongodb_connection_string
+```
+
+Run server:
+
+```
+node server.js
+```
+
+---
+
+### 3️⃣ Frontend Setup
+
+* Open `frontend/index.html` in browser
+
+---
+
+## 🔗 API Endpoints
+
+| Method | Endpoint         | Description       |
+| ------ | ---------------- | ----------------- |
+| GET    | /api/courses     | Fetch all courses |
+| POST   | /api/courses     | Create new course |
+| DELETE | /api/courses/:id | Delete course     |
+
+---
+
+## ⚠️ Notes
+
+* Render free tier may cause **initial delay (cold start)**
+* Some YouTube videos may not embed due to restrictions
+
+---
+
+## 🚀 Future Improvements
+
+* 🔐 User Authentication (JWT)
+* 👤 Course ownership (creator-specific access)
+* 🔍 Search & filtering
+* 📱 Mobile responsiveness
+* 🎨 UI enhancements
+
+---
+
+## 👨‍💻 Author
+
+Rithvik Sopinti
+
+---
+
+## ⭐ If you like this project
+
+Give it a ⭐ on GitHub!
